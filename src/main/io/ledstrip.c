@@ -613,9 +613,9 @@ void applyLedModeLayer(void)
         if (!(ledConfig->flags & LED_FUNCTION_FLIGHT_MODE)) {
             if (ledConfig->flags & LED_FUNCTION_ARM_STATE) {
                 if (!ARMING_FLAG(ARMED)) {
-                    setLedHsv(ledIndex, &hsv_green);
-                } else {
                     setLedHsv(ledIndex, &hsv_blue);
+                } else {
+                    setLedHsv(ledIndex, &hsv_green);
                 }
             }
             continue;
@@ -674,7 +674,7 @@ void applyLedWarningLayer(uint8_t updateNow)
 
         if ((warningFlashCounter & 1) == 0) {
             if (warningFlashCounter < 4 && (warningFlags & WARNING_FLAG_ARMING_DISABLED)) {
-                warningColor = &hsv_green;
+                warningColor = &hsv_blue;
             }
             if (warningFlashCounter >= 4 && warningFlashCounter < 12 && (warningFlags & WARNING_FLAG_LOW_BATTERY)) {
                 warningColor = &hsv_red;
@@ -744,12 +744,12 @@ void applyLedIndicatorLayer(uint8_t indicatorFlashState)
             applyQuadrantColor(ledIndex, ledConfig, QUADRANT_SOUTH_WEST, flashColor);
         }
 
-        if (rcCommand[PITCH] > INDICATOR_DEADBAND) {
+        //if (rcCommand[PITCH] > INDICATOR_DEADBAND) {
             applyQuadrantColor(ledIndex, ledConfig, QUADRANT_NORTH_EAST, flashColor);
             applyQuadrantColor(ledIndex, ledConfig, QUADRANT_NORTH_WEST, flashColor);
         }
 
-        if (rcCommand[PITCH] < -INDICATOR_DEADBAND) {
+        //if (rcCommand[PITCH] < -INDICATOR_DEADBAND) {
             applyQuadrantColor(ledIndex, ledConfig, QUADRANT_SOUTH_EAST, flashColor);
             applyQuadrantColor(ledIndex, ledConfig, QUADRANT_SOUTH_WEST, flashColor);
         }
@@ -927,7 +927,7 @@ void updateLedStrip(void)
     if (indicatorFlashNow) {
 
         uint8_t rollScale = ABS(rcCommand[ROLL]) / 50;
-        uint8_t pitchScale = ABS(rcCommand[PITCH]) / 50;
+        //uint8_t pitchScale = ABS(rcCommand[PITCH]) / 50;
         uint8_t scale = MAX(rollScale, pitchScale);
         nextIndicatorFlashAt = now + (LED_STRIP_5HZ / MAX(1, scale));
 
